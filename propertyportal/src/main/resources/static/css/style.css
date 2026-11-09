@@ -1,0 +1,242 @@
+
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+}
+
+/* Navbar */
+.navbar {
+    padding: 16px 0;
+}
+
+.navbar-brand {
+    font-size: 26px;
+    color: #1e3a8a !important;
+    letter-spacing: -1px;
+}
+
+.nav-link {
+    font-weight: 500;
+    margin-left: 15px;
+    color: #334155;
+}
+
+.nav-link:hover {
+    color: #2563eb;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    border-radius: 8px;
+    padding: 10px 22px;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+/* Hero Section */
+.hero-section {
+    min-height: 460px;
+
+    background:
+        linear-gradient(
+            rgba(15, 23, 42, 0.65),
+            rgba(15, 23, 42, 0.65)
+        ),
+        url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9')
+        center/cover no-repeat;
+
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.hero-content {
+    max-width: 650px;
+    padding: 70px 0;
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-content p {
+    font-size: 18px;
+    color: #e2e8f0;
+    margin-bottom: 28px;
+}
+
+/* Property Section */
+#properties {
+    min-height: 350px;
+}
+
+#properties h2 {
+    font-size: 34px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Property Cards */
+.property-card {
+    background: white;
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.07);
+    transition: transform 0.3s ease,
+                box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.property-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.13);
+}
+
+.property-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.property-card .card-body {
+    padding: 20px;
+}
+
+.property-title {
+    font-size: 20px;
+    font-weight: 650;
+    margin-bottom: 10px;
+}
+
+.property-location {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.property-price {
+    color: #2563eb;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.property-details {
+    display: flex;
+    justify-content: space-between;
+    color: #64748b;
+    font-size: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Footer */
+footer {
+    background-color: #0f172a;
+    color: #cbd5e1;
+    margin-top: 50px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    .hero-section {
+        min-height: 380px;
+    }
+
+    .hero-content h1 {
+        font-size: 34px;
+    }
+
+    .hero-content p {
+        font-size: 16px;
+    }
+
+    #properties h2 {
+        font-size: 28px;
+    }
+}
+/* Property Card Badges */
+.property-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 6px;
+    margin-bottom: 10px;
+}
+
+.sale-badge {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.rent-badge {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.type-badge {
+    background-color: #f1f5f9;
+    color: #334155;
+}
+/* Fix Property Badge Visibility */
+.property-card .card-body .property-badge {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 6px 12px !important;
+    margin: 0 6px 12px 0 !important;
+    border-radius: 20px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+.property-card .card-body .sale-badge {
+    background-color: #e0f2fe !important;
+    color: #0369a1 !important;
+}
+
+.property-card .card-body .rent-badge {
+    background-color: #dcfce7 !important;
+    color: #15803d !important;
+}
+
+.property-card .card-body .type-badge {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+}
+/* Property Card Image Hover Effect */
+.property-image {
+    transition: transform 0.4s ease;
+}
+
+.property-card:hover .property-image {
+    transform: scale(1.05);
+}
+
+/* Smooth Card Appearance */
+.property-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.15);
+}

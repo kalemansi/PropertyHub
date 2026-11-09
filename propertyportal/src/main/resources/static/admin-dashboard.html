@@ -1,0 +1,523 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | PropertyHub</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        body {
+            background: #f1f5f9;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .navbar {
+            background: #172554;
+        }
+
+        .navbar-brand {
+            color: white;
+            font-weight: bold;
+        }
+
+        .dashboard-title {
+            color: #172554;
+            font-weight: 700;
+        }
+
+        .stat-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .property-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: #e2e8f0;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .pending-badge {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .approved-badge {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .rejected-badge {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-approve {
+            background: #15803d;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #166534;
+            color: white;
+        }
+
+        .btn-reject {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background: #b91c1c;
+            color: white;
+        }
+
+        .section-heading {
+            color: #172554;
+            font-weight: 700;
+        }
+
+        .nav-pills .nav-link {
+            color: #172554;
+            font-weight: 600;
+        }
+
+        .nav-pills .nav-link.active {
+            background: #172554;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">PropertyHub | Admin</a>
+
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-white" id="adminName">Admin</span>
+            <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                Logout
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+
+    <div class="mb-4">
+        <h2 class="dashboard-title">Admin Dashboard</h2>
+        <p class="text-muted">Manage and review all property listings.</p>
+    </div>
+
+    <!-- Dashboard Statistics -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="card stat-card p-3">
+                <h6 class="text-muted">Pending Properties</h6>
+                <h2 class="text-warning mb-0" id="pendingCount">0</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card stat-card p-3">
+                <h6 class="text-muted">Approved Properties</h6>
+                <h2 class="text-success mb-0" id="approvedCount">0</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card stat-card p-3">
+                <h6 class="text-muted">Rejected Properties</h6>
+                <h2 class="text-danger mb-0" id="rejectedCount">0</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Property Sections -->
+    <ul class="nav nav-pills mb-4 gap-2" id="propertyTabs">
+
+        <li class="nav-item">
+            <button class="nav-link active"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pendingSection">
+                Pending
+            </button>
+        </li>
+
+        <li class="nav-item">
+            <button class="nav-link"
+                    data-bs-toggle="pill"
+                    data-bs-target="#approvedSection">
+                Approved
+            </button>
+        </li>
+
+        <li class="nav-item">
+            <button class="nav-link"
+                    data-bs-toggle="pill"
+                    data-bs-target="#rejectedSection">
+                Rejected
+            </button>
+        </li>
+
+    </ul>
+
+    <div class="tab-content">
+
+        <!-- Pending Properties -->
+        <div class="tab-pane fade show active" id="pendingSection">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="section-heading">Pending Property Approvals</h4>
+
+                <button class="btn btn-primary btn-sm"
+                        onclick="loadAllProperties()">
+                    Refresh
+                </button>
+            </div>
+
+            <div class="row g-4" id="pendingContainer">
+                <div class="col-12 text-center text-muted">
+                    Loading properties...
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Approved Properties -->
+        <div class="tab-pane fade" id="approvedSection">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="section-heading">Approved Properties</h4>
+
+                <button class="btn btn-primary btn-sm"
+                        onclick="loadAllProperties()">
+                    Refresh
+                </button>
+            </div>
+
+            <div class="row g-4" id="approvedContainer"></div>
+
+        </div>
+
+        <!-- Rejected Properties -->
+        <div class="tab-pane fade" id="rejectedSection">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="section-heading">Rejected Properties</h4>
+
+                <button class="btn btn-primary btn-sm"
+                        onclick="loadAllProperties()">
+                    Refresh
+                </button>
+            </div>
+
+            <div class="row g-4" id="rejectedContainer"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+    // Admin login check
+    const loggedInUser = JSON.parse(
+        sessionStorage.getItem("loggedInUser")
+    );
+
+    if (!loggedInUser || loggedInUser.role !== "ADMIN") {
+
+        alert("Access denied! Admin login required.");
+        window.location.href = "login.html";
+
+    } else {
+
+        document.getElementById("adminName").textContent =
+            loggedInUser.fullName || "Admin";
+
+        loadAllProperties();
+    }
+
+    // Logout
+    function logout() {
+
+        sessionStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+    }
+
+    // Load all three property categories
+    async function loadAllProperties() {
+
+        try {
+
+            const [pendingResponse, approvedResponse, rejectedResponse] =
+                await Promise.all([
+
+                    fetch("/api/admin/properties/pending"),
+                    fetch("/api/admin/properties/approved"),
+                    fetch("/api/admin/properties/rejected")
+
+                ]);
+
+            if (!pendingResponse.ok ||
+                !approvedResponse.ok ||
+                !rejectedResponse.ok) {
+
+                throw new Error("Unable to load property information.");
+            }
+
+            const pending = await pendingResponse.json();
+            const approved = await approvedResponse.json();
+            const rejected = await rejectedResponse.json();
+
+            // Update statistics
+            document.getElementById("pendingCount").textContent =
+                pending.length;
+
+            document.getElementById("approvedCount").textContent =
+                approved.length;
+
+            document.getElementById("rejectedCount").textContent =
+                rejected.length;
+
+            // Display property cards
+            displayProperties(pending, "pendingContainer", "PENDING");
+            displayProperties(approved, "approvedContainer", "APPROVED");
+            displayProperties(rejected, "rejectedContainer", "REJECTED");
+
+        } catch (error) {
+
+            document.getElementById("pendingContainer").innerHTML =
+                `<div class="col-12">
+                    <div class="alert alert-danger">
+                        ${escapeHTML(error.message)}
+                        <button class="btn btn-sm btn-danger ms-2"
+                                onclick="loadAllProperties()">
+                            Retry
+                        </button>
+                    </div>
+                </div>`;
+        }
+    }
+
+    // Display property cards
+    function displayProperties(properties, containerId, status) {
+
+        const container = document.getElementById(containerId);
+
+        if (properties.length === 0) {
+
+            container.innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-light text-center">
+                        No ${status.toLowerCase()} properties available.
+                    </div>
+                </div>`;
+
+            return;
+        }
+
+        container.innerHTML = "";
+
+        properties.forEach(property => {
+
+            const image = property.imageUrl ||
+                "https://placehold.co/600x400?text=No+Image";
+
+            let badgeClass = "pending-badge";
+
+            if (status === "APPROVED") {
+                badgeClass = "approved-badge";
+            } else if (status === "REJECTED") {
+                badgeClass = "rejected-badge";
+            }
+
+            const card = document.createElement("div");
+
+            card.className = "col-lg-4 col-md-6";
+
+            card.innerHTML = `
+                <div class="card property-card h-100">
+
+                    <img src="${escapeHTML(image)}"
+                         class="property-image"
+                         alt="Property image"
+                         onerror="this.src='https://placehold.co/600x400?text=No+Image'">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="status-badge ${badgeClass}">
+                                ${status}
+                            </span>
+
+                            <small class="text-muted">
+                                ID: ${property.id}
+                            </small>
+
+                        </div>
+
+                        <h5 class="fw-bold">
+                            ${escapeHTML(property.title)}
+                        </h5>
+
+                        <p class="text-muted">
+                            ${escapeHTML(property.description || "")}
+                        </p>
+
+                        <h5 class="text-primary">
+                            ₹${Number(property.price || 0).toLocaleString("en-IN")}
+                        </h5>
+
+                        <hr>
+
+                        <p class="mb-1">
+                            <strong>Location:</strong>
+                            ${escapeHTML(property.locality || "")},
+                            ${escapeHTML(property.city || "")}
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Property Type:</strong>
+                            ${escapeHTML(property.propertyType || "")}
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Listing Type:</strong>
+                            ${escapeHTML(property.listingType || "")}
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Bedrooms:</strong>
+                            ${property.bedrooms ?? "N/A"}
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Bathrooms:</strong>
+                            ${property.bathrooms ?? "N/A"}
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Area:</strong>
+                            ${property.area ?? "N/A"} sq.ft.
+                        </p>
+
+                        <p class="mb-3">
+                            <strong>Owner:</strong>
+                            ${escapeHTML(property.ownerName || "N/A")}
+                        </p>
+
+                        ${status === "PENDING" ? `
+                            <div class="d-flex gap-2">
+
+                                <button class="btn btn-approve flex-fill"
+                                        onclick="approveProperty(${property.id})">
+                                    Approve
+                                </button>
+
+                                <button class="btn btn-reject flex-fill"
+                                        onclick="rejectProperty(${property.id})">
+                                    Reject
+                                </button>
+
+                            </div>
+                        ` : ""}
+
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(card);
+        });
+    }
+
+    // Approve property
+    async function approveProperty(id) {
+
+        if (!confirm("Are you sure you want to approve this property?")) {
+            return;
+        }
+
+        await updatePropertyStatus(id, "approve");
+    }
+
+    // Reject property
+    async function rejectProperty(id) {
+
+        if (!confirm("Are you sure you want to reject this property?")) {
+            return;
+        }
+
+        await updatePropertyStatus(id, "reject");
+    }
+
+    // Update property status
+    async function updatePropertyStatus(id, action) {
+
+        try {
+
+            const response = await fetch(
+                `/api/admin/properties/${id}/${action}`,
+                {
+                    method: "PUT"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Unable to update property status.");
+            }
+
+            alert(`Property ${action}d successfully!`);
+
+            await loadAllProperties();
+
+        } catch (error) {
+
+            alert(error.message);
+        }
+    }
+
+    // Escape HTML values
+    function escapeHTML(value) {
+
+        return String(value).replace(/[&<>"']/g, char => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[char]);
+    }
+
+</script>
+
+</body>
+</html>

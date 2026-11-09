@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Property Portal</title>
+    <link rel="stylesheet" href="css/register.css">
+</head>
+<body>
+
+<div class="register-container">
+    <h2>Create Your Account</h2>
+    <p>Join Property Portal today</p>
+
+    <form id="registerForm">
+
+        <input type="text" id="fullName"
+               placeholder="Full Name" required>
+
+        <input type="email" id="email"
+               placeholder="Email Address" required>
+
+        <input type="password" id="password"
+               placeholder="Password (minimum 8 characters)"
+               minlength="8" required>
+
+        <input type="tel" id="phoneNumber"
+               placeholder="Phone Number" required>
+
+        <select id="role" required>
+            <option value="">Select Role</option>
+            <option value="BUYER">Buyer</option>
+            <option value="SELLER">Seller</option>
+            <option value="AGENT">Agent</option>
+            <option value="RENTER">Renter</option>
+        </select>
+
+        <button type="submit">Register</button>
+
+        <p id="message"></p>
+
+    </form>
+
+    <p>Already have an account?
+        <a href="login.html">Login here</a>
+    </p>
+</div>
+
+<script src="js/register.js"></script>
+
+</body>
+</html>
